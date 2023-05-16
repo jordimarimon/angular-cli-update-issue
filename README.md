@@ -1,27 +1,42 @@
-# TestApp
+# Angular CLI issue
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
+## Steps to reproduce
 
-## Development server
+**1.** Create a new angular project using the latest Angular CLI: `npx @angular/cli@latest new test-app --skip-install`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+**2.** Change the Angular version to the previous major version (at the time of writing the previous major version 
+is `15.2.9`)
 
-## Code scaffolding
+**3.** Add `@types/web` as a development dependency by following the instructions in [here](https://www.npmjs.com/package/@types/web):
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```shell
+pnpm add @typescript/lib-dom@npm:@types/web --save-dev
+npm install @typescript/lib-dom@npm:@types/web --save-dev
+yarn add @typescript/lib-dom@npm:@types/web --dev
+```
 
-## Build
+**4.** Execute `ng update @angular/cli @angular/core --allow-dirty`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+**5.** You should be seeing the following error:
 
-## Running unit tests
+```shell
+✔ Packages successfully installed.
+Using package manager: npm
+Collecting installed dependencies...
+Found 16 dependencies.
+Fetching dependency metadata from registry...
+✖ Migration failed: 404 Not Found - GET https://registry.npmjs.org/@typescript%2flib-dom - Not found
+  See ".../angular-errors.log" for further details.
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The stacktrace of the error:
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```shell
+[error] HttpErrorGeneral: 404 Not Found - GET https://registry.npmjs.org/@typescript%2flib-dom - Not found
+    at /tmp/angular-cli-packages-Fv6UlW/node_modules/npm-registry-fetch/lib/check-response.js:95:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async RegistryFetcher.packument (/tmp/angular-cli-packages-Fv6UlW/node_modules/pacote/lib/registry.js:87:19)
+    at async Promise.all (index 3)
+    at async /tmp/angular-cli-packages-Fv6UlW/node_modules/@angular/cli/src/commands/update/schematic/index.js:671:36
+    at async callRuleAsync (/tmp/angular-cli-packages-Fv6UlW/node_modules/@angular-devkit/schematics/src/rules/call.js:77:18)
+```
