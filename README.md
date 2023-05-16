@@ -1,5 +1,7 @@
 # Angular CLI issue
 
+[Issue](https://github.com/angular/angular-cli/issues/25224)
+
 ## Steps to reproduce
 
 **1.** Create a new angular project using the latest Angular CLI: `npx @angular/cli@latest new test-app --skip-install`
